@@ -1,0 +1,804 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>体育场馆预定</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/mystyles.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="myheading">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="logo">体育场馆预定</li>
+                    <li class="active"><a href="index.html">首页</a></li>
+                    <li id="inform"><a href="#">最新公告</a></li>
+                    <li class="dropdown"  id="login_before">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" >个人中心<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#myModal" >登录</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#myModal2" >注册</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="输入搜索内容">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">登录</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-inline" id="form1" >
+                                    <b>登录类型</b>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="type" id="inlineRadio1" value="user" checked="checked"> 用户
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="type" id="inlineRadio2" value="admin"> 管理员
+                                    </label><br>
+                                    <div class="form-group">
+                                        <label for="user">手机</label>
+                                        <input type="text" class="form-control" id="user" placeholder="手机号码" name="tel">
+                                    </div><br>
+                                    <div class="form-group">
+                                        <label for="password">密码</label>
+                                        <input type="password" class="form-control" id="password" name="password">
+                                        <span class='info' style='color: red'></span>
+                                    </div><br>
+                                    <button type="button" class="btn btn-default" id="form1_sub" data-dismiss="modal">登录</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+
+            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabe2">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel2">注册</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-inline"  method="post" >
+                                <div class="form-group">
+                                    <label for="tel">手机号码</label>
+                                    <input type="tel" class="form-control" id="tel" placeholder="手机号" name="tel" required>
+                                </div><br>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="options1" value="校内人员" onclick="judgeRadioClicked()" required>
+                                        校内人员
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="options2" value="校外人员" onclick="judgeRadioClicked()" required checked="checked">
+                                        校外人员
+                                    </label>
+                                </div><br>
+                                <div class="form-group" id="Names">
+                                    <label for="name">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                                    <input type="text" class="form-control" id="name" placeholder="姓名" name="name" required>
+                                </div><br>
+                                <div id='oncampus' style="display: none">
+                                    <div class='form-group'>
+                                        <label for='academy'>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;院</label>
+                                    <input type='text' class='form-control' id='academy' placeholder='学院' name='academy' >
+                                    </div><br>
+                                    <div class='form-group'>
+                                        <label for='grade'>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级</label>
+                                        <input type='text' class='form-control' id='grade' placeholder='年级' name='grade' >
+                                    </div><br>
+                                    <div class='form-group'>
+                                        <label for='stuNo'>学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+                                        <input type='text' class='form-control' id='stuNo' placeholder='学号' name='stuNo' >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password1">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+                                    <input type="password" class="form-control" id="password1" name="password" required>
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="repsword">确认密码</label>
+                                    <input type="password" class="form-control" id="repsword" name="password" required>
+                                    <span class='pswinfo' style='color: red'></span>
+                                </div><br>
+                            </form>
+                            <button class="btn btn-default" style="margin-left: 100px" id="register">注册</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel3">我要预定</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-inline" id="form2" >
+                                <div id="dingdan">
+                                    <div class="form-group">
+                                        <label for="date" class=" control-label">选择日期</label>
+                                            <input type="date" class="form-control" id="date" placeholder="Date" value="" style="width:200px;" name="Date" onfocusout="checkDate()">
+                                    </div><br><br>
+                                    选择场地：
+                                    <select id="GymArea" name="GymArea" onchange="GymAreachange(event)">
+                                        <option>校区</option>
+                                        <option>旗山校区</option>
+                                        <option>仓山校区</option>
+				                    </select>
+                                    <select id="Place" name="Place" onchange="Placechange(event)">
+                                        <option>SON</option>
+                                        <option>DAD</option>
+                                    </select>
+                                    <select id="SonPlace" name="SonPlace" onchange="SonPlacechange(event)"></select>
+                                    <select id="SonArea" name="SonArea" onchange="accessTime(event)">
+                                    <option>请选择</option>
+                                    </select><br><br>
+                                    已被预定时间:<div id="limit"></div><br>
+                                    选择时间段：  <select  style="width:150px;height: 30px" name="StartTime" id="starttime" onchange="timecheck(event)">
+                                    <option>08:00</option>
+                                    <option>08:30</option>
+                                    <option>09:00</option>
+                                    <option>09:30</option>
+                                    <option>10:00</option>
+                                    <option>10:30</option>
+                                    <option>11:00</option>
+                                    <option>11:30</option>
+                                    <option>12:00</option>
+                                    <option>12:30</option>
+                                    <option>13:00</option>
+                                    <option>13:30</option>
+                                    <option>14:00</option>
+                                    <option>14:30</option>
+                                    <option>15:00</option>
+                                    <option>15:30</option>
+                                    <option>16:00</option>
+                                    <option>16:30</option>
+                                    <option>17:00</option>
+                                    <option>17:30</option>
+                                    <option>18:00</option>
+                                    <option>18:30</option>
+                                    <option>19:00</option>
+                                    <option>19:30</option>
+                                    <option>20:00</option>
+                                    <option>20:30</option>
+                                    <option>21:00</option>
+                                    <option>21:30</option>
+                                    <option>22:00</option>
+                                </select>&nbsp;&nbsp;到&nbsp;&nbsp;
+                                    <select  style="width:150px;height: 30px" name="OverTime" id="overtime" onchange="timecheck(event)">
+                                        <option>08:00</option>
+                                        <option>08:30</option>
+                                        <option>09:00</option>
+                                        <option>09:30</option>
+                                        <option>10:00</option>
+                                        <option>10:30</option>
+                                        <option>11:00</option>
+                                        <option>11:30</option>
+                                        <option>12:00</option>
+                                        <option>12:30</option>
+                                        <option>13:00</option>
+                                        <option>13:30</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>15:00</option>
+                                        <option>15:30</option>
+                                        <option>16:00</option>
+                                        <option>16:30</option>
+                                        <option>17:00</option>
+                                        <option>17:30</option>
+                                        <option>18:00</option>
+                                        <option>18:30</option>
+                                        <option>19:00</option>
+                                        <option>19:30</option>
+                                        <option>20:00</option>
+                                        <option>20:30</option>
+                                        <option>21:00</option>
+                                        <option>21:30</option>
+                                        <option>22:00</option>
+                                    </select>
+                                    <!-- 
+                                    <div style="margin-top: 10px;margin-left: 150px"><button class="btn btn-primary" id="tijiao">提交订单</button></div>
+                                     -->
+                                    <div>
+                                        <span style="color: orange;display:none" id="stot">请检查后重新选择时间</span>
+                                        <span style="color: orange;display:none" id="noallow">当前时间已经被预定，请重新选择要预定的时间段</span>
+                                	</div>
+                                </div>
+                            </form>
+                            <div style="margin-top: 10px;margin-left: 150px"><button class="btn btn-primary" id="tijiao">提交订单</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <h3 id="qs"></h3>
+    <div class="clearfix"> </div>
+    <h3 id="cs"></h3>
+  <!--<button onclick="getcookie(event)">get</button>-->
+ <!--       <div class='col-sm-6 col-md-4' >
+       <div class='thumbnail'>
+        <img src='' class='imgsize'>
+        <div class='caption'>
+            <h4 id="pp">足球</h4>
+            <div>价格;20元/小时</div>
+            <p >1b旗山c</p>
+            <p><button  class='btn btn-primary reserve' role='button' data-toggle='modal' onclick='reserve(event)'data-target='#myModal3'>我要预订</button></p>
+        </div>
+        </div>
+        </div>
+       <div class='col-sm-6 col-md-4' >
+        <div class='thumbnail'>
+        <img src='' class='imgsize'><div class='caption'>
+        <h4>篮球</h4>
+        <p >仓山</p>
+        <p><button  class='btn btn-primary reserve' role='button' data-toggle='modal'onclick='reserve(event)' data-target='#myModal3'>我要预订</button></p>
+        </div>
+        </div>
+        </div> -->
+
+    </div>
+
+
+
+<div class="myfooter">
+    <p>Copyright ©体育场馆预定2015-2016，All Rights Reserve</p>
+</div>
+<script>
+
+$("#register").click(function(){
+	focus();
+	var a = empty();
+	var optionsRadios;
+	if($("#options1").is(":checked"))
+		optionsRadios = $("#options1").val();
+	else if($("#options2").is(":checked"))
+		optionsRadios = $("#options2").val();
+	if(a=="success"){
+		$.ajax({
+			url:"RegisterServlet",
+			data:{
+				tel:$("#tel").val(),
+				name:$("#name").val(),
+				academy:$("#academy").val(),
+				grade:$("#grade").val(),
+				stuNo:$("#stuNo").val(),
+				password:$("#password1").val(),
+				optionsRadios:optionsRadios
+			},
+		    success:function(result){
+		    	$("#myModal2").modal('hide');
+		    	$("#tel").val("");
+		    	$("#name").val("");
+		    	$("#academy").val("");
+		    	$("#grade").val("");
+		    	$("#stuNo").val("")
+		    	$("#password1").val("");
+		    	$("#repsword").val("");
+		    }
+		})
+	}
+})
+    //加载场馆信息
+    var Timeinfo=new Object();
+    var  GymArea='';
+    var  Place='';
+    var SonPlace='';
+    var SonArea='';
+    var  uname='';
+    var  Telphone='';
+    var cookie;
+    $(document).ready(function(){
+         $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'MainServlet',
+            data: "",
+            success: function (data) {
+                var j=0;
+                for (i in data) {
+                    j++;
+	                    var placeinfo = "<div class='col-sm-6 col-md-4' >"+
+	                    	"<div class='thumbnail' >" +
+                            "<img src='' class='imgsize' id='imgid' style='width:300px;height:192px'>"+
+                    		"<div class='caption' >"+
+                    		"<h4>" +data[i].Type+"</h4>"+
+                    		"<p style='display:none'>"+data[i].Address+"</p>"+
+                    		"<h5>"+data[i].Price+"元/小时</h5>"+
+                    		"<p ><a  class='btn btn-primary ' role='button' data-toggle='modal' onclick='reserve(event)' data-target='#myModal3'>我要预订</a>"+
+                    		"</p></div></div></div>";
+                   if( data[i].Address.indexOf("旗山")>=0) 
+                   {
+                	   $("#qs").after(placeinfo);
+                   	   var qs=data[i].Address;
+                   }
+                   if( data[i].Address.indexOf("仓山")>=0) 
+                   {
+                	   $("#cs").after(placeinfo);
+                	   var cs=data[i].Address;
+                   }
+                  $("#imgid").attr("src",data[i].Picture); 
+                    $("#imgid").attr("id",j);
+                }
+                $("#qs").append(qs);
+                $("#cs").append(cs);
+            },
+            error: function (err) { //如果执行不成功，那么执行此方法
+                alert("加载场馆信息失败" + err);
+            }
+        }) 
+    $("#login_before").load("login.jsp");
+        cookie= document.cookie.split(';');
+//        alert(Telphone[0]);
+    })
+
+    // 点我要预定传GymArea,SonPlace,请求Place
+    function reserve(e){
+        var e=window.event;
+        var targ = e.target;
+        if(!cookie[0])
+       {
+           alert("您尚未登录，请先登录");
+          $(targ).attr("data-target","#myModal");
+      }
+       else{
+            $(targ).attr("data-target","#myModal3");
+       }
+        //为日期赋初始值
+        var myDate = new Date();
+        var year=myDate.getFullYear();
+    	var month=myDate.getMonth()+1;
+    	var date=myDate.getDate();	
+        document.getElementById("date").value= year+"-"+"0"+month+"-"+"0"+date;;
+        //上述操作结束
+        var place=new Object();
+        place.Tel=cookie[0];
+        place.Name=cookie[1];
+        place.Type=$(targ).parent().siblings("h4").text();
+        place.GymArea=$(targ).parent().siblings("p").text();
+        place.SonPlace=$(targ).parent().siblings("h4").text();
+        if( place.GymArea.indexOf("旗山")>=0)
+        {
+            place.GymArea="旗山校区";
+        }
+        else if( place.GymArea.indexOf("仓山")>=0){
+            place.GymArea="仓山校区"
+        }
+        $("#limit").empty();
+        $("#GymArea").empty();
+        $("#GymArea").append("<option>"+place.GymArea+"</option>");
+        $("#SonPlace").empty();
+        $("#SonPlace").append("<option>"+place.SonPlace+"</option>");
+        $("#Place").empty();
+        $("#SonArea").empty();
+        var placeinfo=JSON.stringify(place);
+        var op="<option>请选择</option>";
+        $("#Place").append(op);
+        /* alert(placeinfo); */
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'PlaceServlet?placeinfo='+placeinfo,
+            data: "placeinfo",
+            success: function (data) {
+                for (i in data) {
+                    var option = "<option>" +data[i].Place+"</option>";
+                    $("#Place").append(option);
+                }
+            },
+        })
+    }
+//第二个下拉
+    function Placechange(e){
+        var e = window.event;
+        var targ = e.target;
+        var place=new Object();
+        Place=targ.value;
+        place.GymArea=$("#GymArea").children("option").text();
+        place.Place=Place;
+        place.SonPlace=$("#SonPlace").children("option").text();
+        var placeinfo=JSON.stringify(place);
+        /* alert(placeinfo); */
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'SonAreaServlet?placeinfo='+placeinfo,
+            data: "placeinfo",
+            success: function (data) {
+		        $("#SonArea").empty();
+		        var op="<option></option>";
+		       // var op ="<option>请选择</option>";
+		        $("#SonArea").append(op);
+                for (i in data) {
+                    var option = "<option>" +data[i].SonArea+"</option>";
+                    $("#SonArea").append(option);
+                }
+            },
+        })
+    }
+    //检查日期是否符合规定
+    function checkDate(){
+    	var myDate = new Date();
+    	var year=myDate.getFullYear();
+    	var month=myDate.getMonth()+1;
+    	var day=myDate.getDate();	
+    	var date = document.getElementById("date").value;
+    	if(""==date){
+    		alert("请将日期填写完整");
+    		return false;
+    	}
+    	else{
+    		var array = date.split("-");
+    		if(array[0]<year){
+    			alert("请填写有效日期");
+    			return false;
+    		}else if(array[0]==year && array[1]<month){
+    			alert("请填写有效日期");
+    			return false;
+    		}else if(array[0]==year && array[1]==month && array[2]<day){
+    			return false;
+    			alert("请填写有效日期");
+    		}
+    	}
+    	return true;
+    }
+
+//当点击最后一个场地时请求不允许时间段
+function accessTime(e){
+	console.log("jjj");
+	var result = checkDate();
+	console.log(result);
+	if(result==false){
+		$("#SonArea").val("");
+	}
+	else if(result==true){
+		console.log("aaa");
+    	var e = window.event;
+    	var targ = e.target;
+        var jsonplaceinfo = $('#form2').serializeObject();
+        delete jsonplaceinfo.StartTime;
+        delete jsonplaceinfo.OverTime;
+        var placeinfo = JSON.stringify(jsonplaceinfo);
+       /*  alert("当点击最后一个场地时请求不允许时间段"); */
+        $("#limit").html("");
+        //alert(placeinfo); 
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'TimeServlet?placeinfo='+placeinfo,
+            data: "placeinfo",
+            success: function (data) {
+                Timeinfo = data;
+                for(i in data){
+                    var timelimit=data[i].StartTime+'至'+data[i].OverTime+'<br>';
+                    $("#limit").append(timelimit);
+                }
+            },
+        })
+    }
+}
+
+    function timecheck(e){
+        $("#stot").css("display","none");
+        $("#noallow").css("display","none");
+        var  st=$("#starttime option:selected").text();
+        var  ot=$("#overtime option:selected").text();
+        if(st>=ot) { $("#stot").css("display","block"); return;}
+        for(i in Timeinfo) {
+           
+            /* if(ot>=Timeinfo[i].StartTime&&ot<=Timeinfo[i].OverTime){
+                $("#noallow").css("display","block");
+            }
+            else if(st>=Timeinfo[i].StartTime&&st<Timeinfo[i].OverTime){
+                $("#noallow").css("display","block");
+            } */
+            
+        	 if(Timeinfo.length>0&&st>=Timeinfo[i].StartTime&&st<Timeinfo[i].OverTime||(st<=Timeinfo[i].StartTime&&ot>=Timeinfo[i].OverTime) ){
+                 $("#noallow").css("display","block");
+             }
+             if(Timeinfo.length>0&&ot>Timeinfo[i].StartTime&&ot<=Timeinfo[i].OverTime){
+                 $("#noallow").css("display","block");
+             }
+        }
+    }
+
+    //提交订单
+    $("#tijiao").click(function(){
+    	checkDate();
+    	if($("#Place option:selected").text()=="" || $("#SonArea option:selected").text()==""){
+    		alert("场地还未选择完毕");
+    		return;
+    	}
+    	//alert('1'); 
+        var  st=$("#starttime option:selected").text();
+        var  ot=$("#overtime option:selected").text();
+        if(st>=ot) { 
+        	$("#stot").css("display","block"); 
+        	return ;
+        }else{
+        	for(i in Timeinfo) {
+            	if(Timeinfo.length>0&&st>Timeinfo[i].StartTime&&st<Timeinfo[i].OverTime){
+            		console.log("i am here");
+                	return ;
+            	}
+            	if(Timeinfo.length>0&&ot>Timeinfo[i].StartTime&&ot<Timeinfo[i].OverTime){
+            		console.log("i am here2");
+                	return ;
+            	}
+        	}
+        var jsonorderinfo = $('#form2').serializeObject();
+        jsonorderinfo.Name=cookie[1];
+        jsonorderinfo.Tel=cookie[0];
+        txt = JSON.stringify(jsonorderinfo);
+        //alert(txt);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'Booking?txt='+txt,
+            success: function (data) {
+                 if(data.msg=='success'){
+                     alert("订单提交成功");
+                     location.href="personal.html";
+                 }
+            },
+            error: function (err) { //如果执行不成功，那么执行此方法
+                alert("请求失败" + err);
+            }
+        } );
+        //alert("3");
+        }
+    })
+
+
+//校内校外人员
+    function judgeRadioClicked()
+    {           var radios = document.getElementsByName("optionsRadios");
+            if(radios[0].checked)
+            {
+                $("#oncampus").css("display","block");
+            }
+            else if(radios[1].checked){
+                $("#oncampus").css("display","none");
+            }
+    }
+
+
+    //登录
+        $("#form1_sub").click(function(){
+            var jsonuserinfo = $('#form1').serializeObject();
+            txt = JSON.stringify(jsonuserinfo);
+            console.log("aa");
+            console.log(txt);
+            /* alert(txt); */
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: 'LoginServlet?txt='+txt,
+                data: "txt",
+                success: function (data) {
+                    if(data.msg=='success')
+                    {
+                        uname=data.name;
+                        telephone=data.tel;
+                        document.cookie="power="+data.power;
+                        if(data.power=='C'){
+                            window.location.href="index.html";
+                        }
+                        else 
+                        {
+                            window.location.href="Gym.html";
+                        }
+                    }
+
+                    else alert(data.reason);
+                },
+                error: function (err) { //如果执行不成功，那么执行此方法
+                    alert("请求失败" + err);
+                }
+            } );
+        })
+
+
+    //注销
+    function exit(e){
+    	/* alert(" 在注销中"); */
+         event.preventDefault();
+        var obj=new Object();
+        obj.msg = "exit";
+        var exit=JSON.stringify(obj);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'ExitServlet',
+            data: "",
+            success: function (data) {
+            	/* alert("111"); */
+             window.location.href="index.html";
+            }
+        }) 
+    }
+
+
+    //账号密码校验
+    $("#tel").change(function(){
+         if($(".info").length>0){
+        	 console.log("aaa");
+            $(".info").remove();
+        }
+        if($("#tel").val()!=''){
+            var tel = $("#tel").val();
+            var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+             if (reg.test(tel)) {
+                 $.ajax({
+                     type: "POST",
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     url: 'JudgeServlet?tel='+tel,
+                     data: "tel",
+                     success: function (data) {
+                         if(data.msg=='allow'){
+                             var  info="<span class='info' style='color: green'>手机号码可用</span>";
+                             $("#tel").after(info);
+                         }
+                         else if(data.msg=='exist'){
+                             var  info="<span class='info' style='color: red'>手机号码已注册</span>";
+                             $("#tel").after(info);
+                         }
+                     }
+                 } );
+
+        }else{
+            var  info="<span class='info' style='color: red'>手机号码格式错误</span>";
+            $("#tel").after(info);
+        }
+        } 
+    })
+    $("#password1").keyup(function(){
+    	console.log("psw1");
+        if($("#password1").val()!=''&&$("#repsword").val()!='')
+        {
+            if ($("#password1").val() != $("#repsword").val()) {
+            	console.log("no")
+               $(".pswinfo").text("");
+            	var info = "两次输入密码不一致";
+            	$(".pswinfo").text(info);
+            }else{
+            	console.log("yes");
+            	 $(".pswinfo").text("");
+            }
+        }
+    })
+    $("#repsword").keyup(function(){
+    	console.log("psw2")
+        if($("#password1").val()!=''&&$("#repsword").val()!='')
+        {
+            if ($("#password1").val() != $("#repsword").val()){
+            	console.log("no")
+            	 $(".pswinfo").text("");
+             	var info = "两次输入密码不一致";
+             	$(".pswinfo").text(info);
+            }else{
+            	console.log("yes")
+            	 $(".pswinfo").text("");
+            }
+        }
+    })
+
+
+    //js对象转json
+    $.fn.serializeObject = function()
+    {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+  //cookie管理
+    function getcookie(e){
+        var a= document.cookie.split(';');
+        var b= decodeURIComponent(a[1]);
+        alert(a[0]+","+encodeURI(a[1]));
+    }
+  function focus(){
+	  $("#tel").focus(function(){
+			$("#tel").css("border-color","#ccc")
+		})
+		$("#name").focus(function(){
+			$("#name").css("border-color","#ccc")
+		})
+		$("#academy").focus(function(){
+			$("#academy").css("border-color","#ccc")
+		})
+		$("#grade").focus(function(){
+			$("#grade").css("border-color","#ccc")
+		})
+		$("#stuNo").focus(function(){
+			$("#stuNo").css("border-color","#ccc")
+		})
+		$("#password1").focus(function(){
+			$("#password1").css("border-color","#ccc")
+		})
+		$("#repsword").focus(function(){
+			$("#repsword").css("border-color","#ccc")
+		})
+  }
+  function empty(){
+	  var flag = false;
+	  if($("#tel").val()==""){
+		  $("#tel").css("border-color","red");
+		  flag = true;
+	  }
+	  if($("#name").val()==""){
+		  $("#name").css("border-color","red");
+		  flag=true;
+	  }
+	  if($("#password1").val()==""){
+		  $("#password1").css("border-color","red");
+		  flag=true;
+	  }
+	  if($("#repsword").val()==""){
+		  $("#repsword").css("border-color","red");
+		  flag=true;
+	  }
+	  if($("#options1").is(":checked")){
+		  if($("#academy").val()==""){
+			  $("#academy").css("border-color","red");
+			  flag=true;
+		  }
+		  if($("#grade").val()==""){
+			  $("#grade").css("border-color","red");
+			  flag=true;
+		  }
+		  if($("#stuNo").val()==""){
+			  $("#stuNo").css("border-color","red");
+			  flag=true;
+		  }
+	  }
+	  if(flag==false)
+		  return "success";
+  }
+</script>
+</body>
+</html>

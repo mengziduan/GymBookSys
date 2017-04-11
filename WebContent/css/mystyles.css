@@ -1,0 +1,44 @@
+.cell{
+    vertical-align:middle;
+}
+.myheading{
+    background-color: #333;
+}
+#logo{
+    font-size:1.8em;
+    color:#e3e3e3;
+    margin-top: 8px;
+}
+.myfooter{
+    padding-top:20px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    color: #767676;
+    text-align:center;
+    border-top:1px solid #e5e5e5;
+}
+#li1{
+    color: #ffffff;
+}
+.th1{
+    width:110px;
+}
+.th2{
+    width:80px;
+}
+
+.th4{
+    width:150px
+}
+.th5{
+    width:90px;
+}
+.th6{
+    width:60px ;
+}
+.tr1{
+    height:50px;
+
+}
+
+

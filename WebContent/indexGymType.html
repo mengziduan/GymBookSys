@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体育场馆后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/mystyles.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+    $(document).ready(function(){
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: 'SelectedIndexGT',
+            data: "",
+            success: function (data) {
+                var GymArea="<option>请选择</option>";
+                for (i in data) {
+                    //alert(data[i].Address);
+                    GymArea = "<option>" + data[i].Address + "</option>";
+                    $(".GAs").append(GymArea);
+                 }
+            }
+        })
+    })
+    </script>
+</head>
+<body>
+<div class="myheading">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="logo">体育场馆后台管理系统</li>
+                    <li id="login"></li>
+                </ul>
+
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control pull-right" placeholder="输入搜索内容">
+                    </div>
+                    <button type="submit" class="btn btn-default "><i class="icon-search"></i>搜索</button>
+                </form>
+
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">登录</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-inline" id="adminlogin">
+                                <b>类型</b>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" id="inlineRadio2" value="admin" checked> 管理员
+                                </label><br>
+                                <div class="form-group">
+                                    <label for="user">用户名</label>
+                                    <input type="text" class="form-control" id="user" placeholder="用户名" name="Tel">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="password2">密&nbsp;&nbsp;&nbsp;码</label>
+                                    <input type="password" class="form-control" id="password2" name="Password">
+                                </div><br>
+                            </form>
+                            <button type="submit" class="btn btn-default" onclick="adminlogin(event)">登录</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="mybody container">
+    <div class="row">
+       <div class="col-md-2">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ><a href="Gym.html" >&nbsp;&nbsp;场馆管理</a></li>
+                <li role="presentation" class="active"><a href="indexGymType.html">&nbsp;&nbsp;首页场地类型管理</a></li>
+                <li role="presentation" ><a href="user.html">&nbsp;&nbsp;用户管理</a></li>
+                <li role="presentation" id="department"><a href="department.html">&nbsp;&nbsp;管理员管理</a></li>
+                <li role="presentation"><a href="order.html" >&nbsp;&nbsp;订单界面</a></li>
+                <li role="presentation"><a href="percenter.html">&nbsp;&nbsp;个人中心</a></li>
+            </ul>
+        </div>
+
+        <div class="tab-content col-md-10">
+           <div >
+                <ol class="breadcrumb">
+                    <li style="font-size: 20px">首页场地类型管理</li>
+                    <button class="btn btn-primary new-item" data-toggle="modal" data-target="#addgymtype" style="display: none;float: right">新增场地类型</button>
+                </ol>
+                <div class="table-responsive actDemo">
+                    <table class="table" style="font-size: 1.2em" >
+                        <thead>
+                        <th>ID</th>
+                        <th>场地类型</th>
+                         <!--<th>图片</th>-->
+                        <th>地点</th>
+                        <th>金额</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody id="tBody">
+                       <!--<tr>-->
+                            <!--<td>001</td>-->
+                            <!--<td>篮球</td>-->
+                            <!--<td>23123</td>-->
+                            <!--<td>旗山校区</td>-->
+                            <!--<td>50元/小时</td>-->
+                            <!--<td><button class='btn btn-primary edit' data-toggle='modal' data-target='#edit_gym' onclick='editgyminfo(event)'>编辑</button>-->
+                                <!--<button class='btn btn-danger remove' onclick='delgym(event)'>移除</button></td></tr>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal fade" id="addgymtype" tabindex="-1" role="dialog" aria-labelledby="addgymtypeLable">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="addgymtypeLable">首页场地类型管理</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                 <form id="addgym"  action="AddType"  method="post"  enctype="multipart/form-data" >                            
+                                        类型：<input name="Type" required/><br>
+                                        图片：<input name="Picture" type="file" ><br>
+                                       <!--  <div style="float: left;">
+                                            <div style="float: left">地点：</div>
+                                            <div style="float: left">
+                                                <select name="GymArea" class="Sselect GAs" style="width:150px;height: 25px" required/>
+                                                </select>
+                                            </div>
+                                            <div style="float: left"><input  class="Sinput GAi"  style="display: none;" required/></div>
+                                        </div>
+                                        <div style="float: left;margin-left: 25px">模式：
+                                            <button type="button" class="btn btn-primary btn-sm selectmode" >选择</button>
+                                            <button type="button" class="btn btn-success btn-sm editmode" >编辑</button>
+                                        </div>
+                                        <div class="clearfix"></div> -->
+                                        场地：<input name="GymArea" required/><br>
+                                        价格：<input name="Price" required/><br>
+                                        <button class="btn btn-default" type="submit" id='submit'>确定</button>                             
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="edit_gym" tabindex="-1" role="dialog" aria-labelledby="editgymLable">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="editgymLable">首页场地类型管理</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <form id="editgym">
+                                        &nbsp;&nbsp;&nbsp;I  D：<input name="ID" id="gym_id"  disabled/><br>
+                                        类型：<input name="Type" id="gym_type"  required/><br>
+                                        图片：<input name="img"   type="file"/><br>
+                                        <div style="float: left;">
+                                            <div style="float: left">地点：</div>
+                                            <div style="float: left">
+                                                <select name="GymArea" class="Sselect GAs" style="width:150px;height: 25px" required/>
+                                                </select>
+                                            </div>
+                                            <div style="float: left"><input  class="Sinput GAi"  style="display: none;" required/></div>
+                                        </div>
+                                        <div style="float: left;margin-left: 25px">模式：
+                                            <button type="button" class="btn btn-primary btn-sm selectmode">选择</button>
+                                            <button type="button" class="btn btn-success btn-sm editmode">编辑</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <script>
+                                            $(".editmode").click(function(){
+                                                $(".Sselect").attr("name","");
+                                                $(".Sselect").css("display","none");
+                                                $(".Sinput").css("display","block");
+                                                $(".GAi").attr("name","GymArea");
+                                            })
+                                            $(".selectmode").click(function(){
+                                                $(".Sinput").attr("name","");
+                                                $(".Sselect").css("display","block");
+                                                $(".Sinput").css("display","none");
+                                                $(".GAs").attr("name","GymArea");
+                                            })
+                                        </script>
+                                        价格：<input name="Price" id="gym_price" required/><br>
+                                        <button class="btn btn-default"  onclick="editgym(event)">确定</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pull-right" id="pageType" pageType="indexGymType">
+                <nav>
+                 <input type="hidden" value="1" id="hidePage">
+                    <ul class="pager">
+                        <li class="disaled"><span id="count">共条</span></li>
+                        <li><span>第<input id="ps" style="margin-left:5px;margin-right:5px;padding:0;height: 18px;line-height:16px;width:25px;" onchange='directPage(event)'>页</span></li>
+                        <li class="disabled"><a href="#" id="upPage" onclick="turnPage(event)">上一页</a></li>
+                        <li><a href="#" id="downPage" onclick="turnPage(event)">下一页</a></li>
+                    </ul>
+                </nav>
+            </div>
+          </div>
+         </div>
+	</div>
+<hr>
+<footer><p style="text-align: center">© 体育场馆预订2016</p></footer>
+</body>
+<script>
+$('#submit').click(function(){
+    $('form').submit();
+    alert('增加成功！');
+});
+</script>
+</html>

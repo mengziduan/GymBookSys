@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体育场馆后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/mystyles.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        //加载添加场馆模态框里的内容
+        $(document).ready(function(){
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: 'SelectedGym',
+                data: "",
+                success: function (data) {
+                    var GymArea="<option>请选择</option>";
+                    var Place="<option>请选择</option>";
+                    var SonPlace="<option>请选择</option>";
+                    var SonArea="<option>请选择</option>";
+                    var Admin="<option>请选择</option>";
+                    for (i in data) {
+                        /*  GymArea = "<option>" + data[i].GymArea + "</option>";
+                         Place = "<option>" + data[i].Place + "</option>";
+                         SonPlace = "<option>" + data[i].SonPlace + "</option>";
+                         SonArea = "<option>" + data[i].SonArea + "</option>";
+                         Admin = "<option>" + data[i].Admin + "</option>";
+                        $(".GAs").append(GymArea);
+                        $(".Ps").append(Place);
+                        $(".SPs").append(SonPlace);
+                        $(".SAs").append(SonArea);
+                        $(".Admins").append(Admin); */
+                    	if(data[i].GymArea!=null){
+                            GymArea = "<option>" + data[i].GymArea + "</option>";
+                            $(".GAs").append(GymArea);
+                       	}
+                       	if(data[i].Place!=null){
+                            Place = "<option>" + data[i].Place + "</option>";
+                            $(".Ps").append(Place);
+                            }
+                       	if(data[i].SonPlace!=null){
+                            SonPlace = "<option>" + data[i].SonPlace + "</option>";
+                            $(".SPs").append(SonPlace);
+                       	}
+                       	if(data[i].SonArea!=null){
+                            SonArea = "<option>" + data[i].SonArea + "</option>";
+                            $(".SAs").append(SonArea); 
+                       	}
+                       	if(data[i].Admin!=null){
+                            Admin = "<option>" + data[i].Admin + "</option>";
+                            $(".Admins").append(Admin);
+                       	}                     
+                                                   
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="myheading">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="logo">体育场馆后台管理系统</li>
+                    <li id="login"></li>
+                </ul>
+
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control pull-right" placeholder="输入搜索内容">
+                    </div>
+                    <button type="submit" class="btn btn-default "><i class="icon-search"></i>搜索</button>
+                </form>
+
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">登录</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-inline" id="adminlogin">
+                                <b>类型</b>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" id="inlineRadio2" value="admin" checked> 管理员
+                                </label><br>
+                                <div class="form-group">
+                                    <label for="user">用户名</label>
+                                    <input type="text" class="form-control" id="user" placeholder="用户名" name="Tel">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="password2">密&nbsp;&nbsp;&nbsp;码</label>
+                                    <input type="password" class="form-control" id="password2" name="Password">
+                                </div><br>
+                            </form>
+                            <button type="submit" class="btn btn-default" onclick="adminlogin(event)">登录</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="mybody container">
+    <div class="row">
+       <div class="col-md-2">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="Gym.html" >&nbsp;&nbsp;场馆管理</a></li>
+                <li role="presentation"><a href="indexGymType.html">&nbsp;&nbsp;首页场地类型管理</a></li>
+                <li role="presentation" ><a href="user.html">&nbsp;&nbsp;用户管理</a></li>
+                <li role="presentation" id="department"><a href="department.html">&nbsp;&nbsp;管理员管理</a></li>
+                <li role="presentation"><a href="order.html" >&nbsp;&nbsp;订单界面</a></li>
+                <li role="presentation"><a href="percenter.html">&nbsp;&nbsp;个人中心</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-10" >
+           <div>
+            <ol class="breadcrumb">
+                <li style="font-size: 20px">场馆管理</li>
+                <button class="btn btn-primary new-item" data-toggle="modal" data-target="#myModal4" style="display: none;float: right">新增场馆</button>
+            </ol>
+                <div class="table-responsive actDemo">
+                    <table class="table" style="font-size: 1.2em" >
+                        <thead>
+                        <th>ID</th>
+                        <th>地点</th>
+                        <th>区域</th>
+                        <th>场馆</th>
+                        <th>场地</th>
+                        <th>管理员</th>
+                        <th>是否可用</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody id="tBody">
+                        <!--<tr>-->
+                            <!--<td>001</td>-->
+                            <!--<td>福建师范大学旗山校区</td>-->
+                            <!--<td>东区田径场</td>-->
+                            <!--<td>篮球场</td>-->
+                            <!--<td>1号场</td>-->
+                            <!--<td>张三三</td>-->
+                            <!--<td>可用</td>-->
+                            <!--<td><button class="btn btn-primary" data-toggle="modal" data-target="#edit_place" onclick="editplaceinfo(event)">编辑</button><button class="btn btn-danger" onclick="delplace(event)">移除</button></td>-->
+                        <!--</tr>-->
+                        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel4">场馆管理</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                            <div>
+                                          <form id="addplace">
+                                              <div style="float: left;margin-top:8px">
+                                               		<div style="float: left">地点：</div>
+                                                  	<div style="float: left">
+                                                      	<select name="GymArea" class="Sselect GAs" style="width:150px;height: 25px" required/></select>
+                                                 	</div>
+                                              	  	<div style="float: left">
+                                              	  	  	<input  class="Sinput GAi"  style="display: none;" required/>
+                                              	  	</div>
+                                              </div>
+                                              
+                                             <div style="float: right">模式：
+                                                 <button type="button" class="btn btn-primary btn-sm" id="selectmode">选择</button>
+                                                 <button type="button" class="btn btn-success btn-sm"id="editmode">编辑</button>
+                                              </div>
+                                              <div class="clearfix"></div>
+                                              
+                                              <script>
+                                                  $("#editmode").click(function(){
+                                                      $(".Sselect").attr("name","");
+                                                      $(".Sselect").css("display","none");
+                                                      $(".Admins").css("display","none");
+                                                      $(".Admins").attr("name","");
+                                                      $(".Sinput").css("display","block");
+                                                      $(".GAi").attr("name","GymArea");
+                                                      $(".Pi").attr("name","Place");
+                                                      $(".SPi").attr("name","SonPlace");
+                                                      $(".SAi").attr("name","SonArea");
+                                                      $(".editAdmin").attr("name","Admin");
+                                                  })
+                                                  $("#selectmode").click(function(){
+                                                      $(".Sinput").attr("name","");
+                                                      $(".Sselect").css("display","block");
+                                                      $(".Admins").css("display","block");
+                                                      $(".Sinput").css("display","none");
+                                                      $(".GAs").attr("name","GymArea");
+                                                      $(".Ps").attr("name","Place");
+                                                      $(".SPs").attr("name","SonPlace");
+                                                      $(".SAs").attr("name","SonArea");
+                                                      $(".Admins").attr("name","Admin");
+                                                  })
+                                              </script>
+                                              
+                                              <div style="float: left;margin-top:5px">区域：</div>
+                                                	<div style="float: left"><select name="Place" class="Sselect Ps" style="width:150px;height: 25px" required/></select></div>
+                                                  <div style="float: left"><input  class="Sinput Pi"  style="display: none;" required/></div>
+                                              <div class="clearfix"></div>
+
+                                              <div style="float: left;margin-top: 5px">场馆：</div>
+                                              <div style="float: left"><select name="SonPlace" class="Sselect SPs" style="width:150px;height: 25px" required/></select></div>
+                                              <div style="float: left"><input  class="Sinput SPi"  style="display: none;" required/></div>
+                                              <div class="clearfix"></div>
+
+                                              <div style="float: left;margin-top: 5px">场地：</div>
+                                              <div style="float: left"><select name="SonArea" class="Sselect SAs" style="width:150px;height: 25px" required/></select></div>
+                                              <div style="float: left"><input  class="Sinput SAi"  style="display: none;" required/></div>
+                                              <div class="clearfix"></div>
+                                              
+                                              <div style="float: left">	  管理员：</div>
+                                              <div style="float: left"><select name="Admin" class="Admins" style="width:150px;height: 25px" required/></select></div>
+                                              <div style="float: left">	<input  class="Sinput editAdmin"  style="display: none;" required/></div>
+                                              <div class="clearfix"></div>
+                                              
+                                              <div><span>场地是否可用</span>
+                                              <label class="radio-inline">
+                                                  <input type="radio" name="status"  value="可用" required> 可用
+                                              </label>
+                                              <label class="radio-inline">
+                                                  <input type="radio" name="status"  value="不可用" required> 不可用
+                                              </label>
+                                                  </div>
+                                          </form>
+                                          <button class="btn btn-default" type="submit" onclick="addplace(event)">确定</button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="edit_place" tabindex="-1" role="dialog" aria-labelledby="editplaceLable">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="editplaceLable">场馆管理</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            <form id="editplace">
+                                                &nbsp;&nbsp;&nbsp;I D：<input name="ID" id="idedit"  disabled/><br>
+                                                地点：<input name="GymArea" id="gymarea"  required/><br>
+                                                区域：<input name="Place" id="eplace" required/><br>
+                                                场馆：<input name="SonPlace" id="sonplace" required/><br>
+                                                场地：<input name="SonArea" id="sonarea" required/><br>
+                                                管理员：<input name="MyAdmin" id="myadmin" required/><br>
+                                                <!-- 
+                                                管理员：<select name="Admin" class="Admins" id="admin" style="width: 160px;height: 25px" required/></select><br>
+                                                 -->
+                                                <div><span>场地是否可用</span>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="status" id="able"  value="可用" required>可用
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="status" id="unable" value="不可用" required>不可用
+                                                    </label>
+                                                </div>
+                                            </form>
+                                            <button class="btn btn-default"  onclick="editplace(event)">确定</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </tbody>
+                        </table>
+                    </div>
+               <div class="pull-right" id="pageType" pageType="Gym">
+               	   <input type="hidden" value="1" id="hidePage">
+                   <nav>
+                       <ul class="pager">
+                           <li class="disaled"><span id="count">共条</span></li>
+                           <li><span>第<input id="ps" value="" style="margin-left:5px;margin-right:5px;padding:0;height: 18px;line-height:16px;width:25px;" onchange='directPage(event)'>页</span></li>
+                           <li class="disabled"><a href='#' id="upPage" onclick='turnPage(event)' >上一页</a></li>
+                           <li class=""><a href='#' id="downPage" onclick='turnPage(event)' >下一页</a></li>
+                       </ul>
+                   </nav>
+               </div>
+        </div>
+        </div>
+        </div>
+	</div>      
+</body>
+</html>

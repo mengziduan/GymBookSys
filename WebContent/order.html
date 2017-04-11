@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体育场馆后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/mystyles.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+</head>
+<body>
+<div class="myheading">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="logo">体育场馆后台管理系统</li>
+                    <li id="login"></li>
+                </ul>
+
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control pull-right" placeholder="输入搜索内容">
+                    </div>
+                    <button type="submit" class="btn btn-default "><i class="icon-search"></i>搜索</button>
+                </form>
+
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">登录</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-inline" id="adminlogin">
+                                <b>类型</b>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" id="inlineRadio2" value="admin" checked> 管理员
+                                </label><br>
+                                <div class="form-group">
+                                    <label for="user">用户名</label>
+                                    <input type="text" class="form-control" id="user" placeholder="用户名" name="Tel">
+                                </div><br>
+                                <div class="form-group">
+                                    <label for="password2">密&nbsp;&nbsp;&nbsp;码</label>
+                                    <input type="password" class="form-control" id="password2" name="Password">
+                                </div><br>
+                            </form>
+                            <button type="submit" class="btn btn-default" onclick="adminlogin(event)">登录</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="mybody container">
+    <div class="row">
+       <div class="col-md-2">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="Gym.html" >&nbsp;&nbsp;场馆管理</a></li>
+                <li role="presentation"><a href="indexGymType.html">&nbsp;&nbsp;首页场地类型管理</a></li>
+                <li role="presentation"><a href="user.html">&nbsp;&nbsp;用户管理</a></li>
+                <li role="presentation" id="department"><a href="department.html">&nbsp;&nbsp;管理员管理</a></li>
+                <li role="presentation" class="active"><a href="order.html" >&nbsp;&nbsp;订单界面</a></li>
+                <li role="presentation"><a href="percenter.html">&nbsp;&nbsp;个人中心</a></li>
+            </ul>
+        </div>
+
+        <div class="col-md-10" >
+                      <div role="tabpanel" class="tab-pane" id="boundary">
+                <ol class="breadcrumb">
+                    <li style="font-size: 20px">订单管理</li>
+                    <li style="margin-left:80px">
+                        <div style="float: left">
+                            <form class="form-inline" id="queryorder">
+                                <div class="form-group pull-left">
+                                    <label for="State">订单状态</label>
+                                    <select class="form-control" style="width: 110px;" id="State" onchange="orderstate(event)" name="State">
+                                        <option>请选择</option>
+                                        <option>未完成</option>
+                                        <option>已完成</option>
+                                    </select>
+                                </div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="form-group pull-right">
+                                    <label for="endTime">到</label>
+                                    <input class="form-control" id="endTime" type="text" name="endTime" style="width: 150px">
+                                </div>
+                                <div class="form-group pull-right">
+                                    <label for="beginTime">时间从</label>
+                                        <input  class="form-control" id="beginTime" type="text" name="beginTime" style="width: 150px">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="pull-right"><button  onclick="queryorder(event)">查询</button></div><div class="clearfix"></div>
+                    </li>
+                </ol>
+                <div class="table-responsive actDemo">
+                    <table class="table" style="font-size: 1.2em" >
+                        <thead>
+                        <th>姓名</th>
+                        <th>电话</th>
+                        <th>地点</th>
+                        <th>场馆</th>
+                        <th>场地</th>
+                        <th>场地号</th>
+                        <th>租用时间</th>
+                        <th>下单时间</th>
+                        <th>金额</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody id="tBody">
+                        <!-- <tr>
+                            <td colspan="3">订单编号:002<div style="background: red;color:#ffffff;float:left;">未完成</div></td>
+                        </tr>
+                        <tr id="a001">
+                            <td>福建师范大学旗山校区</td>
+                            <td>东区</td>
+                            <td>篮球馆</td>
+                            <td>1号场</td>
+                            <td>15:00至17:00</td>
+                            <td>时间:2016-05-25&nbsp;15:00</td>
+                            <td>10元</td>
+                            <td><button class="btn btn-danger" data-toggle="modal" data-target="#myModal2" onclick="cancel(event)">取消</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">订单编号:003<div style="background: green;color:#ffffff;float:left;">已完成</div></td>
+                        </tr>
+                        <tr>
+                            <td>福建师范大学旗山校区</td>
+                            <td>西区</td>
+                            <td>篮球馆</td>
+                            <td>2号场</td>
+                            <td>13:00至17:00</td>
+                            <td>时间:2016-05-25&nbsp;13:00</td>
+                            <td>10元</td>
+                            <td></td>
+                        </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="pull-right" id="pageType" pageType="order">
+                <nav>
+                 <input type="hidden" value="1" id="hidePage">
+                    <ul class="pager">
+                        <li class="disaled"><span id="count"></span></li>
+                        <li><span>第<input id="ps" style="margin-left:5px;margin-right:5px;padding:0;height: 18px;line-height:16px;width:25px;" onchange='directPage(event)'>页</span></li>
+                        <li class="disabled"><a href="#" id="upPage" onclick="turnPage(event)">上一页</a></li>
+                        <li><a href="#" id="downPage" onclick="turnPage(event)">下一页</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+     </div>
+</div>
+<script>
+    $("#beginTime").datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh',
+        todayBtn : true,
+        autoclose: true,
+        minView: "month",
+    });
+    $("#endTime").datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh',
+        todayBtn : true,
+        autoclose: true,
+        minView: "month",
+    });
+</script>
+</body>
+</html>

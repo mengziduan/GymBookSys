@@ -1,0 +1,20 @@
+.myheading{
+    background-color:#afd9ee;
+}
+#logo{
+    font-size:1.8em;
+    color:#e3e3e3;
+    margin-top: 8px;
+}
+.imgsize{
+   height: 260px;
+   width:320px;
+}
+.myfooter{
+    padding-top:20px;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    color: #767676;
+    text-align:center;
+    border-top:1px solid #e5e5e5;
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体育场馆后台管理</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/mystyles.css">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="myheading">
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="logo">体育场馆预定</li>
+                    <li ><a href="index.html">首页</a></li>
+                    <li><a href="#">最新公告</a></li>
+                    <li class="dropdown" class="active" id="login">
+                    </li>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="输入搜索内容">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+            </div>
+            </div>
+        </nav>
+    </div>
+    
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">登录</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline" id="form1" >
+                    <b>登录类型</b>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" id="inlineRadio1" value="user"> 用户
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="type" id="inlineRadio2" value="admin"> 管理员
+                    </label><br>
+                    <div class="form-group">
+                        <label for="user">手机</label>
+                        <input type="text" class="form-control" id="user" placeholder="手机号码" name="tel">
+                    </div><br>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div><br>
+                    <button type="button" class="btn btn-default" id="form1_sub" data-dismiss="modal">登录</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <div class="col-md-1" ></div>
+        <div class="col-md-10" >
+                <ol class="breadcrumb">
+                    <li style="font-size: 20px">个人中心</li>
+                </ol>
+                <form id="personal">
+                    <div class=" form-group-md">
+                        <label class="control-label" for="text1"></label>
+                        <div class="input-group" style="width:40%;">
+                            <div class="input-group-addon">&nbsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;</div>
+                            <input  type="text" class="form-control" id="text1"  value="" name="Name">
+                        </div>
+                    </div>
+                    <div class=" form-group-md">
+                        <label class="control-label" for="text2"></label>
+                        <div class="input-group" style="width:40%;float:left;margin-top:20px">
+                            <div class="input-group-addon">手机号码</div>
+                            <input  type="tel" class="form-control" id="tel"  value="" name="Tel">
+                        </div>
+                       <div style="float:left;display:none;margin-top:28px;color:red" id="errmsg">手机号码格式错误</div>
+                       <div class="clearfix"></div>    
+                    </div>
+                    <div class=" form-group-md" id='errorinfo'>
+                        <label class="control-label" for="password1"></label>
+                        <div class="input-group" style="width:40%;">
+                            <div class="input-group-addon">&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码&nbsp;</div>
+                            <input  type="password" class="form-control" id="password1" name="Password" required>
+                        </div>
+                    </div>
+                    <div class=" form-group-md">
+                        <label class="control-label" for="repassword1"></label>
+                        <div class="input-group"  style="width:40%;float:left;margin-top:20px">
+                            <div class="input-group-addon">确认密码</div>
+                            <input  type="password" class="form-control" id="repassword1">
+                        </div>
+                        <div id="diffpwd" style='color: red;margin-top:28px;float:left;display:none'>两次输入密码不一致</div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <br/>
+                    <br/>
+                </form>
+           			 <button onclick="personal(event)" class="btn btn-success btn-md ">保存</button>
+            </div>
+<script>
+var uid;
+$(document).ready(function(){
+	$("#login").load("perlogin.jsp");
+	cookie= document.cookie.split(';');
+	var data =new Object();
+	data.Username=cookie[0];
+	var user=JSON.stringify(data);
+ 	/* alert(user);  */
+    //个人中心加载信息
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: 'LoadUserPers?user='+user,
+        data: "user",
+        success: function (data) {
+            for (i in data) {
+                $("#text1").attr("value",data[i].Name);
+                $("#tel").attr("value",data[i].Tel);
+                $("#password1").attr("value",data[i].Password);
+                $("#repassword1").attr("value",data[i].Password);
+                uid=data[i].Id;
+            }
+        }
+    })
+})
+
+//修改个人信息
+function personal(e){
+   /*  alert("ss");  */
+	var r=confirm("确认修改？")
+	  if (r==true)
+	{
+    var user=$("#personal").serializeObject();
+    user.Username=cookie[0];
+    user.Id=uid;
+    var  userinfo=JSON.stringify(user);  
+   /*  alert(userinfo); */  
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: 'EditUserPers?userinfo='+userinfo,
+        data: "userinfo",
+        success: function (data) {
+            for(i in data){
+                $("#text1").attr("value",data[i].Name);
+                $("#tel").attr("value",data[i].Tel);
+                $("#password1").attr("value",data[i].Password);
+                $("#repassword1").attr("value",data[i].Password);
+                window.location.href="index.html";
+            }
+        }
+    })
+	}
+}
+
+function exit(e){
+	/* alert(" 在注销中"); */
+     event.preventDefault();
+    var obj=new Object();
+    obj.msg = "exit";
+    var exit=JSON.stringify(obj);
+    $.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: 'ExitServlet',
+        data: "",
+        success: function (data) {
+        	/* alert("111"); */
+         window.location.href="index.html";
+        }
+    }) 
+}
+
+
+$("#tel").change(function(){
+	 $("#errmsg").css("display","none");
+    if($(".info").length>0){
+        $(".info").remove();
+    }
+    if($("#tel").val()!=''){
+        var tel = $("#tel").val();
+        var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+         if (reg.test(tel)) {        }
+         else{
+             var  info="<span class='info' style='color: red'>手机号码格式错误</span>";
+             $("#errmsg").css("display","block");
+         }
+         } 
+     });
+$("#password1").keyup(function(){
+	  $("#diffpwd").css("display","none");
+  if($("#password1").val()!=''&&$("#repassword1").val()!='')
+  {
+      if ($("#password1").val() != $("#repassword1").val()) {
+      	  $("#diffpwd").css("display","block");
+      }
+  }
+});
+$("#repassword1").keyup(function(){
+$("#diffpwd").css("display","none");
+  if($("#password1").val()!=''&&$("#repassword1").val()!='')
+  {
+      if ($("#password1").val() != $("#repassword1").val()){
+          $("#diffpwd").css("display","block");
+      }
+  }
+});
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+</script>
+</body>
+</html>
